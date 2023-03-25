@@ -7,11 +7,10 @@ public class CakeController : MonoBehaviour, IPointerDownHandler, IDragHandler, 
     private bool CanDrag = true;
     private bool Spawn = true;
     public Rigidbody2D rigid;
-    public bool isOnCanvas;
     private Vector3 offset;
     public GameObject spawnPoint;
     public GameObject spawnDrop;
-    public GameObject endgame;
+    public GameObject Land;
     public Level1 lv1;
 
     private void Awake()
@@ -30,19 +29,7 @@ public class CakeController : MonoBehaviour, IPointerDownHandler, IDragHandler, 
     private Vector3 GetPointerPosition()
     {
         Vector3 pointerPosition = Vector3.zero;
-
-        if (isOnCanvas)
-        {
-            // Object trên Canvas dùng toạ độ trên screen
-            pointerPosition = Input.mousePosition;
-
-        }
-        else
-        {
-            // Object trong Scene dùng toạ độ World
-            pointerPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        }
-
+        pointerPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         pointerPosition.z = 0;
         return pointerPosition;
     }
@@ -52,7 +39,7 @@ public class CakeController : MonoBehaviour, IPointerDownHandler, IDragHandler, 
         if (CanDrag == true)
         {
             SoundController.Instance.PlayOnce(SoundType.ButtonClick);
-            //transform.DOScale(lv1.getScaleValue(), .01f);
+            transform.DOScale(1.5f, .01f);
             Vector3 pointerPosition = GetPointerPosition();
             offset = pointerPosition - transform.position;
         }
@@ -73,6 +60,7 @@ public class CakeController : MonoBehaviour, IPointerDownHandler, IDragHandler, 
                 lv1.spawnCake(transform.position);
             }
             transform.position = spawnPoint.transform.position;
+            transform.DOScale(1f, .01f);
         }
     }
 
@@ -84,7 +72,7 @@ public class CakeController : MonoBehaviour, IPointerDownHandler, IDragHandler, 
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.name == endgame.name)
+        if (other.gameObject.name == Land.name)
         {
             Debug.Log("banh da va cham voi " + other.gameObject.name);
             lv1.endLevel();

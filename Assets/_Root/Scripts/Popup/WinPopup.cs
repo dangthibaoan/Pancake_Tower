@@ -4,7 +4,8 @@ using TMPro;
 public class WinPopup : Popup
 {
     public Level1 lv1;
-    public TextMeshProUGUI txt;
+    public TextMeshProUGUI NewScore;
+    public TextMeshProUGUI BestScore;
     public GameObject img;
     public void OnClickHomeButton()
     {
@@ -31,6 +32,7 @@ public class WinPopup : Popup
             SoundController.Instance.PlayOnce(SoundType.Lose);
             img.SetActive(false);
         }
-        txt.SetText(score + "");
+        NewScore.SetText(score + "");
+        BestScore.SetText(Data.MaxScore + "");
     }
 }
